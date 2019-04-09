@@ -8,7 +8,7 @@ Our capstone will be hosted at
 
 There are three potential projects we are excited about.
 
-#### Alternative ELMo Objective
+#### Alternative ELMo Training Objective
 
 The ELMo training objective is to predict the next word given the history.
 However, it's not obvious that this training objective will result in a rich
@@ -41,11 +41,13 @@ whether modern parsers have overfit to PTB.
 
 #### Biasing models with Human Attention
 
-For this task, we would start with obtaining datasets with annotated human
-attention. We then develop models that can read in human attention and use them
-as parameters, mostly by modifying existing models that do not use human attention.
-After we trained these models that use human attention, they can be compared
-on the same datasets against the models that do not use human attention. We
-can then analyze how using human attention can affect existing models. One
-possible stretch goal for this project is to beat existing models not using
-human attention by certain margin on the same dataset.
+For this task, we will first obtain datasets with annotated human attention. We
+will then extend existing models to take human attention as input and use them
+to bias the model. For example, Barret et. al.  regularize neural attention
+with human attention.
+
+After we train these models, we will compare them on the same datasets against
+models that do not use human attention. We can then analyze the effects of
+human attention.  One stretch goal for this project is to show that biasing
+models with human attention can consistently improve performance across
+different tasks and models.
