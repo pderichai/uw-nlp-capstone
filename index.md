@@ -26,7 +26,18 @@ ELMo and results in performance gains on downstream tasks.
 
 #### Are Parsers Overfit to PTB?
 
-Blah blah blah.
+The Penn Treebank (PTB) was first developed in 1993. Since then, it has become
+_the_ standard dataset to train and evaluate parsers in English. Unfortunately,
+this means that the same train, dev, and test splits have been used for many
+years. We hypothesize that modern parsers may be overfitting to the PTB test
+set, and we want to test this by annotating a new test set of comparable size.
+
+Following the original PTB annotation guidelines will be extremely challenging.
+It will take weeks just to read and understand the guidelines, and even more
+time to become proficient in creating parse trees.  We will likely have to work
+with a linguist to verify the quality of our parse trees. In the best case, we
+will create a new high-quality PTB test set that will allow us to verify
+whether modern parsers have overfit to PTB.
 
 #### Biasing models with Human Attention
 
