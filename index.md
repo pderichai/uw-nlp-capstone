@@ -23,4 +23,6 @@ attention. We then develop models that can read in human attention and use them
 as parameters, mostly by modifying existing models that do not use human attention.
 After we trained these models that use human attention, they can be compared
 on the same datasets against the models that do not use human attention. We
-can then analyze how using human attention can affect existing models.
+can then analyze how using human attention can affect existing models. One
+possible stretch goal for this project is to beat existing models not using
+human attention by certain margin on the same dataset.
