@@ -51,3 +51,16 @@ models that do not use human attention. We can then analyze the effects of
 human attention.  One stretch goal for this project is to show that biasing
 models with human attention can consistently improve performance across
 different tasks and models.
+
+### Blog Post \#2
+
+#### Alternative ELMo Training Objective
+
+Pros:
+  * Relatively easy to implement.
+  * Clear baselines to compare against.
+  * Simple but interesting modification to existing techniques.
+
+Cons:
+  * Requires significant compute power.
+  * Very likely that this will not give interesting results.
