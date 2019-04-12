@@ -64,6 +64,7 @@ Pros:
 Cons:
   * Requires significant compute power.
   * Very likely that this will not give interesting results.
+  * Beating the performance of BERT will be difficult.
 
 #### Biasing Models with Human Attention
 
@@ -86,3 +87,12 @@ Pros:
 Cons:
   * Requires lots of manual labor (manually annotating parse trees), which may be a bit boring.
   * It might be hard to run some of the older parsers (especially the non-neural ones...)
+
+#### Likely Codebases and Platforms
+
+We will do most of our work in AllenNLP and PyTorch.
+
+#### Lecture Topic or Class Discussion
+
+It would be fun to have a lecture on the history of the PTB, key design choices
+that were made, and a general history of parsers.
