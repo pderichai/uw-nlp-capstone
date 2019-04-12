@@ -65,7 +65,7 @@ Cons:
   * Requires significant compute power.
   * Very likely that this will not give interesting results.
 
-#### Biasing models with Human Attention
+#### Biasing Models with Human Attention
 
 Pros:
   * Interesting idea to see how human way of processing text can help NLP models.
@@ -76,3 +76,12 @@ Cons:
   vice versa.
   * Hard to tell if the gain is from human attention or multitasking if we deal
   with the last con by multitasking.
+  
+#### Do PTB Parsers Generalize to the PTB?
+
+Pros:
+  * Of great importance to the NLP community (particularly those working on syntactic parsing). Past trends in NLP mostly saw datasets being constructed and used for (literal) decades---how much have we overfit in the interim?
+  * Relatively straightforward to conduct the experiment, and the results are interesting regardless of the outcome.
+Cons:
+  * Requires lots of manual labor (manually annotating parse trees), which may be a bit boring.
+  * It might be hard to run some of the older parsers (especially the non-neural ones...)
