@@ -64,3 +64,15 @@ Pros:
 Cons:
   * Requires significant compute power.
   * Very likely that this will not give interesting results.
+
+#### Biasing models with Human Attention
+
+Pros:
+  * Interesting idea to see how human way of processing text can help NLP models.
+  * Clear baselines to compare against for the end tasks.
+
+Cons:
+  * Corpora annotated with human attention usually are not labelled for NLP and
+  vice versa.
+  * Hard to tell if the gain is from human attention or multitasking if we deal
+  with the last con by multitasking.
