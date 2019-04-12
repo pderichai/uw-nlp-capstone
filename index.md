@@ -82,6 +82,7 @@ Cons:
 Pros:
   * Of great importance to the NLP community (particularly those working on syntactic parsing). Past trends in NLP mostly saw datasets being constructed and used for (literal) decades---how much have we overfit in the interim?
   * Relatively straightforward to conduct the experiment, and the results are interesting regardless of the outcome.
+
 Cons:
   * Requires lots of manual labor (manually annotating parse trees), which may be a bit boring.
   * It might be hard to run some of the older parsers (especially the non-neural ones...)
