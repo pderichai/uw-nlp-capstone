@@ -116,8 +116,7 @@ However, it's also somewhat surprising that linear models on top of large-scale 
 are unable to decode such information. In particular, going several decades to contextual word clusters
 (e.g., Brown clustering and friends), person name clustering usually falls out quite
 neatly, and the same is true of locations. It seems like these large-scale CWRs should do
-better with entities--what are they missing, and can we devise ways of training CWRs to be more
-entity-aware?
+better with entities--**in this project, our objective is to examine what are they missing, and how we devise ways of training CWRs with more information about entities.**
 
 ### Minimum Viable Action Plan
 
@@ -134,12 +133,12 @@ in general.
 
 ### Stretch Goals
 
-We're also interested in producing CWRs with greater knowledge about entities, and assessing
-whether these methods lead to gains on intrinsic probing tasks and extrinsic NLP tasks. For instance,
-one idea would be to pretrain entity-aware language models[^fn5] and examine whether their hidden states
-encode more information about entities / are more performant than standard CWRs on tasks that require
-knowledge about entities. It's likely that we will be able to produce a proof-of-concept, but
-large-scale pretraining may prove to be cost and time-prohibitive.
+We're also interested in producing CWRs with greater knowledge about entities, and 
+**evaluating whether these methods lead to gains on intrinsic probing tasks and extrinsic NLP tasks.**
+For instance, one idea would be to pretrain entity-aware language models[^fn5] and examine whether
+their hidden states encode more information about entities / are more performant than standard CWRs
+on tasks that require knowledge about entities. It's likely that we will be able to produce a
+proof-of-concept, but large-scale pretraining may prove to be cost and time-prohibitive.
 
 ### References
 
