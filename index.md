@@ -144,7 +144,7 @@ proof-of-concept, but large-scale pretraining may prove to be cost and time-proh
 
 [^fn1]: Peters, Matthew E., et al. "Deep contextualized word representations." Proc. of NAACL (2018).
 
-[^fn2]: Radford, Alec, et al. ["Improving language understanding by generative pre-training."] (https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf) (2018).
+[^fn2]: Radford, Alec, et al. ["Improving language understanding by generative pre-training."](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf) (2018).
 
 [^fn3]: Devlin, Jacob, et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." Proc. of NAACL (2019).
 
