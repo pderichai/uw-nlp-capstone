@@ -97,37 +97,58 @@ We will do most of our work in AllenNLP and PyTorch.
 It would be fun to have a lecture on the history of the PTB, key design choices
 that were made, and a general history of parsers.
 
-## Blog Post 3: Project Proposal
+## Blog Post \#3: Project Proposal
 
 Contextual word representations (CWRs) like ELMo[^fn1], GPT[^fn2], and
-BERT[^fn3] have recently caused a paradigm shift in representation learning in
-NLP.  By pretraining language models on massive amounts of text,
-state-of-the-art results were achieved across many different tasks.
+BERT[^fn3] have improved the state of the art on a wide variety of NLP tasks.
+Pretraining large-scale contextualizers on massive amounts of text with self-supervised
+objectives (e.g., masked language modeling, bidirectional language modeling) is 
+key to their success.[^fn4]
 
-We seek to understand some observed shortcomings of CWRs---in particular, there
-is evidence that while contextual word embeddings approach or outperform state
-of the art on many tasks, the same embeddings perform poorly on named entity
-recognition (NER).[^fn4]
+Prior work[^fn4] analyzed CWRs with probing models and found notable shortcomings.
+In particular, while CWRs approach or outperform the state of the art on many tasks,
+these same embeddings perform poorly on tasks like named entity recognition (NER).
+
+On one hand, this is fairly expected---knowledge of named entities is unlikely to significantly
+aid contextualizers in their pretraining task (be it bidirectional language modeling, masked language
+modeling, or some thing else), so there's little motivation for these models to learn such information.
+However, it's also somewhat surprising that linear models on top of large-scale CWRs 
+are unable to decode such information. In particular, going several decades to contextual word clusters
+(e.g., Brown clustering and friends), person name clustering usually falls out quite
+neatly, and the same is true of locations. It seems like these large-scale CWRs should do
+better with entities--what are they missing, and can we devise ways of training CWRs to be more
+entity-aware?
 
 ### Minimum Viable Action Plan
 
-We will develop tasks that can probe different aspects of CWRs. These tasks
-will be targeted to understand why CWRs might perform poorly on NER.
-Once we have develop our probing tasks, we will use them to evaluate the
-different CWRs and see where they fall short compared to previous state of the
-art. Since this will be an analysis project, our evaluation will boil down to
-whether we are able to make a convincing argument about why CWRs perform better
-on some tasks than others.
+We will perform a thorough error analysis of a CWR + linear model NER sequence labeling model,
+and compare the output and errors to a CWR + MLP NER seqeuence labeling model, and the state-of-the-art 
+systems for NER (with and without pretraining). This analysis would enable us to answer a variety of 
+questions about the model's behavior and lead to better understanding---for instance, we're curious
+whether the errors are distributed across entity types, or whether it fails to capture one specific type.
+
+We will also devise and experiment with additional probing that stress information about entity, beyond
+just named entity recognition and coreference arc prediction. This would help paint a broader picture
+of whether (1) CWRs are not performant at NER or whether (2) CWRs lack information about entities 
+in general.
 
 ### Stretch Goals
 
-In the case that our probing tasks are successful, we hope to explore methods
-of improving CWRs such that they do not have the same observed weaknesses as
-ELMo, GPT, and BERT.
+We're also interested in producing CWRs with greater knowledge about entities, and assessing
+whether these methods lead to gains on intrinsic probing tasks and extrinsic NLP tasks. For instance,
+one idea would be to pretrain entity-aware language models[^fn5] and examine whether their hidden states
+encode more information about entities / are more performant than standard CWRs on tasks that require
+knowledge about entities. It's likely that we will be able to produce a proof-of-concept, but
+large-scale pretraining may prove to be cost and time-prohibitive.
 
 ### References
 
-[^fn1]: Peters, Matthew E., et al. "Deep contextualized word representations." arXiv preprint arXiv:1802.05365 (2018).
-[^fn2]: Radford, Alec, et al. "Improving language understanding by generative pre-training." URL https://s3-us-west-2. amazonaws. com/openai-assets/research-covers/languageunsupervised/language understanding paper. pdf (2018).
-[^fn3]: Devlin, Jacob, et al. "Bert: Pre-training of deep bidirectional transformers for language understanding." arXiv preprint arXiv:1810.04805 (2018).
-[^fn4]: Liu, Nelson F., et al. "Linguistic Knowledge and Transferability of Contextual Representations." arXiv preprint arXiv:1903.08855 (2019).
+[^fn1]: Peters, Matthew E., et al. "Deep contextualized word representations." Proc. of NAACL (2018(.
+
+[^fn2]: Radford, Alec, et al. ["Improving language understanding by generative pre-training."] (https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf) (2018).
+
+[^fn3]: Devlin, Jacob, et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." Proc. of NAACL (2019).
+
+[^fn4]: Liu, Nelson F., et al. "Linguistic Knowledge and Transferability of Contextual Representations." Proc. of NAACL (2019).
+
+[^fn5]: Ji, Yangfeng, et al. "Dynamic Entity Representations in Neural Language Models." Proc. of EMNLP (2017).
