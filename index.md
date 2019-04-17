@@ -96,3 +96,38 @@ We will do most of our work in AllenNLP and PyTorch.
 
 It would be fun to have a lecture on the history of the PTB, key design choices
 that were made, and a general history of parsers.
+
+### Blog Post \#3: Project Proposal
+
+Contextual word representations (CWRs) like ELMo[^fn1], GPT[^fn2], and
+BERT[^fn3] have recently caused a paradigm shift in representation learning in
+NLP.  By pretraining language models on massive amounts of text,
+state-of-the-art results were achieved across many different tasks.
+
+We seek to understand some observed shortcomings of CWRs---in particular, there
+is evidence that while contextual word embeddings approach or outperform state
+of the art on many tasks, the same embeddings perform poorly on named entity
+recognition (NER).[^fn4]
+
+#### Minimum Viable Action Plan
+
+We will develop tasks that can probe different aspects of CWRs. These tasks
+will be targeted to understand why CWRs might perform poorly on NER.
+Once we have develop our probing tasks, we will use them to evaluate the
+different CWRs and see where they fall short compared to previous state of the
+art. Since this will be an analysis project, our evaluation will boil down to
+whether we are able to make a convincing argument about why CWRs perform better
+on some tasks than others.
+
+#### Stretch Goals
+
+In the case that our probing tasks are successful, we hope to explore methods
+of improving CWRs such that they do not have the same observed weaknesses as
+ELMo, GPT, and BERT.
+
+#### References
+
+[^fn1]: Peters, Matthew E., et al. "Deep contextualized word representations." arXiv preprint arXiv:1802.05365 (2018).
+[^fn2]: Radford, Alec, et al. "Improving language understanding by generative pre-training." URL https://s3-us-west-2. amazonaws. com/openai-assets/research-covers/languageunsupervised/language understanding paper. pdf (2018).
+[^fn3]: Devlin, Jacob, et al. "Bert: Pre-training of deep bidirectional transformers for language understanding." arXiv preprint arXiv:1810.04805 (2018).
+[^fn4]: Liu, Nelson F., et al. "Linguistic Knowledge and Transferability of Contextual Representations." arXiv preprint arXiv:1903.08855 (2019).
