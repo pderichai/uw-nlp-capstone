@@ -1,8 +1,8 @@
 # Table of Contents
 - [Blog Post \#1](#blog-post-1)
 - [Blog Post \#2](#blog-post-2)
-- [Blog Post \#3: Project Proposal]](#blog-post-3-project-proposal)
-- [Blog Post \#4: Spinning Up]](#blog-post-4-spinning-up)
+- [Blog Post \#3: Project Proposal](#blog-post-3-project-proposal)
+- [Blog Post \#4: Spinning Up](#blog-post-4-spinning-up)
 
 ## Blog Post 1
 
