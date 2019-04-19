@@ -1,4 +1,8 @@
-# Blog Post: [[1]](#blog-post-1) [[2]](#blog-post-2) [[3]](#blog-post-3-project-proposal)
+# Table of Contents
+- [Blog Post \#1](#blog-post-1)
+- [Blog Post \#2](#blog-post-2)
+- [Blog Post \#3: Project Proposal]](#blog-post-3-project-proposal)
+- [Blog Post \#4: Spinning Up]](#blog-post-4-spinning-up)
 
 ## Blog Post 1
 
@@ -151,3 +155,16 @@ proof-of-concept, but large-scale pretraining may prove to be cost and time-proh
 [^fn4]: Liu, Nelson F., et al. "Linguistic Knowledge and Transferability of Contextual Representations." Proc. of NAACL (2019).
 
 [^fn5]: Ji, Yangfeng, et al. "Dynamic Entity Representations in Neural Language Models." Proc. of EMNLP (2017).
+
+## Blog Post \#4: Spinning Up
+
+To begin, we wanted to verify that we could reproduce experimental results for running BERT on the NER task (either
+individual layers, or a learned weighting of all layers). To do so, we used the code and infrastructure from 
+[this repo](https://github.com/nelson-liu/contextual-repr-analysis), and were able to successfully re-run the experiments
+and reproduce the results.
+
+We're working on building AllenNLP `Predictor`s to actually produce the predicted NER tokens for each instance in the
+development set, and we will analyze the resultant output files. In particular, we've been looking at pre-existing tools
+to facilitate error analysis and draw qualitative and quantitive conclusions about differences between models from 
+their output. For example, this recent paper from [Neubig et al., (2019)](https://arxiv.org/abs/1903.07926) describes
+an open-source tool that seeks to facilitate the comparison of text-generation systems (e.g., for machine translation).
