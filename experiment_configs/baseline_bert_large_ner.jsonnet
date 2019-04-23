@@ -11,13 +11,15 @@
      "bert": {
          "type": "bert-pretrained",
          "pretrained_model": "bert-base-cased"
-     },
+     }
     }
   },
   "train_data_path": std.extVar("NER_TRAIN_DATA_PATH"),
   "validation_data_path": std.extVar("NER_TEST_A_PATH"),
   "model": {
     "type": "simple_tagger",
+    "calculate_span_f1": true,
+    "label_encoding": "IOB1",
     "text_field_embedder": {
         "allow_unmatched_keys": true,
         "embedder_to_indexer_map": {
