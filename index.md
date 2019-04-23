@@ -144,18 +144,6 @@ their hidden states encode more information about entities / are more performant
 on tasks that require knowledge about entities. It's likely that we will be able to produce a
 proof-of-concept, but large-scale pretraining may prove to be cost and time-prohibitive.
 
-### References
-
-[^fn1]: Peters, Matthew E., et al. "Deep contextualized word representations." Proc. of NAACL (2018).
-
-[^fn2]: Radford, Alec, et al. ["Improving language understanding by generative pre-training."](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf) (2018).
-
-[^fn3]: Devlin, Jacob, et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." Proc. of NAACL (2019).
-
-[^fn4]: Liu, Nelson F., et al. "Linguistic Knowledge and Transferability of Contextual Representations." Proc. of NAACL (2019).
-
-[^fn5]: Ji, Yangfeng, et al. "Dynamic Entity Representations in Neural Language Models." Proc. of EMNLP (2017).
-
 ## Blog Post \#4: Spinning Up
 
 To begin, we wanted to verify that we could reproduce experimental results for running BERT on the NER task (either
@@ -168,3 +156,15 @@ development set, and we will analyze the resultant output files. In particular, 
 to facilitate error analysis and draw qualitative and quantitive conclusions about differences between models from 
 their output. For example, this recent paper from [Neubig et al., (2019)](https://arxiv.org/abs/1903.07926) describes
 an open-source tool that seeks to facilitate the comparison of text-generation systems (e.g., for machine translation).
+
+## References
+
+[^fn1]: Peters, Matthew E., et al. "Deep contextualized word representations." Proc. of NAACL (2018).
+
+[^fn2]: Radford, Alec, et al. ["Improving language understanding by generative pre-training."](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf) (2018).
+
+[^fn3]: Devlin, Jacob, et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." Proc. of NAACL (2019).
+
+[^fn4]: Liu, Nelson F., et al. "Linguistic Knowledge and Transferability of Contextual Representations." Proc. of NAACL (2019).
+
+[^fn5]: Ji, Yangfeng, et al. "Dynamic Entity Representations in Neural Language Models." Proc. of EMNLP (2017).
