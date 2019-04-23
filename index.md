@@ -73,24 +73,31 @@ Cons:
 ### Biasing Models with Human Attention
 
 Pros:
-  * Interesting idea to see how human way of processing text can help NLP models.
+  * Interesting idea to see how human way of processing text can help NLP
+    models.
   * Clear baselines to compare against for the end tasks.
 
 Cons:
   * Corpora annotated with human attention usually are not labelled for NLP and
-  vice versa.
+    vice versa.
   * Hard to tell if the gain is from human attention or multitasking if we deal
-  with the last con by multitasking.
+    with the last con by multitasking.
   
 ### Do PTB Parsers Generalize to the PTB?
 
 Pros:
-  * Of great importance to the NLP community (particularly those working on syntactic parsing). Past trends in NLP mostly saw datasets being constructed and used for (literal) decades---how much have we overfit in the interim?
-  * Relatively straightforward to conduct the experiment, and the results are interesting regardless of the outcome.
+  * Of great importance to the NLP community (particularly those working on
+    syntactic parsing). Past trends in NLP mostly saw datasets being
+    constructed and used for (literal) decades---how much have we overfit in
+    the interim?
+  * Relatively straightforward to conduct the experiment, and the results are
+    interesting regardless of the outcome.
 
 Cons:
-  * Requires lots of manual labor (manually annotating parse trees), which may be a bit boring.
-  * It might be hard to run some of the older parsers (especially the non-neural ones...)
+  * Requires lots of manual labor (manually annotating parse trees), which may
+    be a bit boring.
+  * It might be hard to run some of the older parsers (especially the
+    non-neural ones...)
 
 ### Likely Codebases and Platforms
 
@@ -105,57 +112,71 @@ that were made, and a general history of parsers.
 
 Contextual word representations (CWRs) like ELMo[^fn1], GPT[^fn2], and
 BERT[^fn3] have improved the state of the art on a wide variety of NLP tasks.
-Pretraining large-scale contextualizers on massive amounts of text with self-supervised
-objectives (e.g., masked language modeling, bidirectional language modeling) is 
-key to their success.[^fn4]
+Pretraining large-scale contextualizers on massive amounts of text with
+self-supervised objectives (e.g., masked language modeling, bidirectional
+language modeling) is key to their success.[^fn4]
 
-Prior work[^fn4] analyzed CWRs with probing models and found notable shortcomings.
-In particular, while CWRs approach or outperform the state of the art on many tasks,
-these same embeddings perform poorly on tasks like named entity recognition (NER).
+Prior work[^fn4] analyzed CWRs with probing models and found notable
+shortcomings.  In particular, while CWRs approach or outperform the state of
+the art on many tasks, these same embeddings perform poorly on tasks like named
+entity recognition (NER).
 
-On one hand, this is fairly expected---knowledge of named entities is unlikely to significantly
-aid contextualizers in their pretraining task (be it bidirectional language modeling, masked language
-modeling, or some thing else), so there's little motivation for these models to learn such information.
-However, it's also somewhat surprising that linear models on top of large-scale CWRs 
-are unable to decode such information. In particular, going several decades to contextual word clusters
-(e.g., Brown clustering and friends), person name clustering usually falls out quite
-neatly, and the same is true of locations. It seems like these large-scale CWRs should do
-better with entities--**in this project, our objective is to examine what are they missing, and how we devise ways of training CWRs with more information about entities.**
+On one hand, this is fairly expected---knowledge of named entities is unlikely
+to significantly aid contextualizers in their pretraining task (be it
+bidirectional language modeling, masked language modeling, or some thing else),
+so there's little motivation for these models to learn such information.
+However, it's also somewhat surprising that linear models on top of large-scale
+CWRs are unable to decode such information. In particular, going several
+decades to contextual word clusters (e.g., Brown clustering and friends),
+person name clustering usually falls out quite neatly, and the same is true of
+locations. It seems like these large-scale CWRs should do better with
+entities--**in this project, our objective is to examine what are they missing,
+and how we devise ways of training CWRs with more information about entities.**
 
 ### Minimum Viable Action Plan
 
-We will perform a thorough error analysis of a CWR + linear model NER sequence labeling model,
-and compare the output and errors to a CWR + MLP NER seqeuence labeling model, and the state-of-the-art 
-systems for NER (with and without pretraining). This analysis would enable us to answer a variety of 
-questions about the model's behavior and lead to better understanding---for instance, we're curious
-whether the errors are distributed across entity types, or whether it fails to capture one specific type.
+We will perform a thorough error analysis of a CWR + linear model NER sequence
+labeling model, and compare the output and errors to a CWR + MLP NER seqeuence
+labeling model, and the state-of-the-art systems for NER (with and without
+pretraining). This analysis would enable us to answer a variety of questions
+about the model's behavior and lead to better understanding---for instance,
+we're curious whether the errors are distributed across entity types, or
+whether it fails to capture one specific type.
 
-We will also devise and experiment with additional probing that stress information about entity, beyond
-just named entity recognition and coreference arc prediction. This would help paint a broader picture
-of whether (1) CWRs are not performant at NER or whether (2) CWRs lack information about entities 
-in general.
+We will also devise and experiment with additional probing that stress
+information about entity, beyond just named entity recognition and coreference
+arc prediction. This would help paint a broader picture of whether (1) CWRs are
+not performant at NER or whether (2) CWRs lack information about entities in
+general.
 
 ### Stretch Goals
 
-We're also interested in producing CWRs with greater knowledge about entities, and 
-**evaluating whether these methods lead to gains on intrinsic probing tasks and extrinsic NLP tasks.**
-For instance, one idea would be to pretrain entity-aware language models[^fn5] and examine whether
-their hidden states encode more information about entities / are more performant than standard CWRs
-on tasks that require knowledge about entities. It's likely that we will be able to produce a
-proof-of-concept, but large-scale pretraining may prove to be cost and time-prohibitive.
+We're also interested in producing CWRs with greater knowledge about entities,
+and **evaluating whether these methods lead to gains on intrinsic probing tasks
+and extrinsic NLP tasks.** For instance, one idea would be to pretrain
+entity-aware language models[^fn5] and examine whether their hidden states
+encode more information about entities / are more performant than standard CWRs
+on tasks that require knowledge about entities. It's likely that we will be
+able to produce a proof-of-concept, but large-scale pretraining may prove to be
+cost and time-prohibitive.
 
 ## Blog Post \#4: Spinning Up
 
-To begin, we wanted to verify that we could reproduce experimental results for running BERT on the NER task (either
-individual layers, or a learned weighting of all layers). To do so, we used the code and infrastructure from 
-[this repo](https://github.com/nelson-liu/contextual-repr-analysis), and were able to successfully re-run the experiments
-and reproduce the results.
+To begin, we wanted to verify that we could reproduce experimental results for
+running BERT on the NER task (either individual layers, or a learned weighting
+of all layers). To do so, we used the code and infrastructure from [this
+repo](https://github.com/nelson-liu/contextual-repr-analysis), and were able to
+successfully re-run the experiments and reproduce the results.
 
-We're working on building AllenNLP `Predictor`s to actually produce the predicted NER tokens for each instance in the
-development set, and we will analyze the resultant output files. In particular, we've been looking at pre-existing tools
-to facilitate error analysis and draw qualitative and quantitive conclusions about differences between models from 
-their output. For example, this recent paper from [Neubig et al., (2019)](https://arxiv.org/abs/1903.07926) describes
-an open-source tool that seeks to facilitate the comparison of text-generation systems (e.g., for machine translation).
+We're working on building AllenNLP `Predictor`s to actually produce the
+predicted NER tokens for each instance in the development set, and we will
+analyze the resultant output files. In particular, we've been looking at
+pre-existing tools to facilitate error analysis and draw qualitative and
+quantitive conclusions about differences between models from their output. For
+example, this recent paper from [Neubig et al.,
+(2019)](https://arxiv.org/abs/1903.07926) describes an open-source tool that
+seeks to facilitate the comparison of text-generation systems (e.g., for
+machine translation).
 
 ## References
 
