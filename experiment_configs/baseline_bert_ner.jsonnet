@@ -18,7 +18,6 @@
   "validation_data_path": std.extVar("NER_TEST_A_PATH"),
   "model": {
     "type": "simple_tagger",
-    "label_encoding": "IOB1",
     "text_field_embedder": {
         "allow_unmatched_keys": true,
         "embedder_to_indexer_map": {
@@ -29,10 +28,10 @@
             "pretrained_model": "bert-large-cased"
 
         }
-    }
+    },
     "encoder": {
       "type": "pass_through",
-      "input_size": 768,
+      "input_dim": 1024,
     },
   },
   "iterator": {
@@ -49,6 +48,6 @@
     "num_epochs": 75,
     "grad_norm": 5.0,
     "patience": 25,
-    "cuda_device": 0
+    "cuda_device": -1
   }
 }
