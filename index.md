@@ -82,7 +82,7 @@ Cons:
     vice versa.
   * Hard to tell if the gain is from human attention or multitasking if we deal
     with the last con by multitasking.
-  
+
 ### Do PTB Parsers Generalize to the PTB?
 
 Pros:
@@ -178,6 +178,24 @@ example, this recent paper from [Neubig et al.,
 seeks to facilitate the comparison of text-generation systems (e.g., for
 machine translation).
 
+## Blog Post \#5: BERT Baseline and Error analysis
+
+We trained and evaluated BERT for NER task on the CoNLL 2003 corpus. The model
+scored F1 measure of 0.795 on the dev set, and 0.733 on the test data. To
+understand the errors made by BERT, we plotted the confusion matrix as followed.
+![](normalized_confusion_matrix.png)
+At the first glance, the model seems really bad at predicting the B tags.
+However, since there are only a handful of B tags in our data, the errors on
+these few tags don't affect the overall metrics as much as it seems.
+
+The model seems to classify non-entities well, correctly labeling more than 99%
+of the O tags. If we look at I tags, the model also correctly classifies 93% of
+the person tags, which is significantly better than 69% of organization tags,
+81% of locations, and 68% of miscellaneous. The model is bad at both
+organizations and miscellaneous entities, and both mostly incorrectly classified
+as non-entities among the errors. Besides non-entities, organizations are most
+often misclassified as locations or organizations, while miscellaneous entities
+are most often misclassified as organizations or locations.
 ## References
 
 [^fn1]: Peters, Matthew E., et al. "Deep contextualized word representations." Proc. of NAACL (2018).
