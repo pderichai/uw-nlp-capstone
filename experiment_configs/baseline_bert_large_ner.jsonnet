@@ -10,7 +10,7 @@
       },
      "bert": {
          "type": "bert-pretrained",
-         "pretrained_model": "bert-base-cased"
+         "pretrained_model": "bert-large-cased"
      }
     }
   },
@@ -28,7 +28,6 @@
         "bert": {
             "type": "bert-pretrained",
             "pretrained_model": "bert-large-cased"
-
         }
     },
     "encoder": {
