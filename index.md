@@ -180,22 +180,30 @@ machine translation).
 
 ## Blog Post \#5: BERT Baseline and Error analysis
 
-We trained and evaluated BERT for NER task on the CoNLL 2003 corpus. The model
-scored F1 measure of 0.795 on the dev set, and 0.733 on the test data. To
-understand the errors made by BERT, we plotted the confusion matrix as followed.
+We trained and evaluated BERT for NER on the CoNLL 2003 corpus. Our model
+scores 0.795 F! on the dev set and 0.733 on the test set. To understand the
+errors made by BERT, we plotted the following confusion matrix.
 ![](normalized_confusion_matrix.png)
 At the first glance, the model seems really bad at predicting the B tags.
-However, since there are only a handful of B tags in our data, the errors on
-these few tags don't affect the overall metrics as much as it seems.
+However, since there are only a handful of B tags in our data, these errors
+shouldn't affect the overall metrics as much as it seems.
 
 The model seems to classify non-entities well, correctly labeling more than 99%
 of the O tags. If we look at I tags, the model also correctly classifies 93% of
-the person tags, which is significantly better than 69% of organization tags,
-81% of locations, and 68% of miscellaneous. The model is bad at both
-organizations and miscellaneous entities, and both mostly incorrectly classified
-as non-entities among the errors. Besides non-entities, organizations are most
+people, which is significantly better than 69% of organizations,
+81% of locations, and 68% of miscellaneous. The model seems bad at
+recognizing both organizations and miscellaneous entities incorrectly classifies
+many as non-entities. Besides non-entities, organizations are most
 often misclassified as locations or organizations, while miscellaneous entities
 are most often misclassified as organizations or locations.
+In general, we can see that the model is over-classifying things as
+non-entities which suggests that it is, in general, having trouble recognizing
+entities.
+
+From here, we plan on implementing the entity LM[^fn5] and training BERT with
+additional entity information. We will also perform further error analysis by
+comparing the errors of the BERT model the current state-of-the-art NER models.
+
 ## References
 
 [^fn1]: Peters, Matthew E., et al. "Deep contextualized word representations." Proc. of NAACL (2018).
