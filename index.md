@@ -190,15 +190,14 @@ shouldn't affect the overall metrics as much as it seems.
 
 The model seems to classify non-entities well, correctly labeling more than 99%
 of the O tags. If we look at I tags, the model also correctly classifies 93% of
-people, which is significantly better than 69% of organizations,
-81% of locations, and 68% of miscellaneous. The model seems bad at
-recognizing both organizations and miscellaneous entities incorrectly classifies
-many as non-entities. Besides non-entities, organizations are most
-often misclassified as locations or organizations, while miscellaneous entities
-are most often misclassified as organizations or locations.
-In general, we can see that the model is over-classifying things as
-non-entities which suggests that it is, in general, having trouble recognizing
-entities.
+people, which is significantly better than 69% of organizations, 81% of
+locations, and 68% of miscellaneous. The model seems bad at recognizing both
+organizations and miscellaneous entities incorrectly classifies many as
+non-entities. Besides non-entities, organizations are most often misclassified
+as locations or organizations, while miscellaneous entities are most often
+misclassified as organizations or locations.  In general, we can see that the
+model is over-classifying things as non-entities which suggests that it is, in
+general, having trouble recognizing entities.
 
 From here, we plan on implementing the entity LM[^fn5] and training BERT with
 additional entity information. We will also perform further error analysis by
