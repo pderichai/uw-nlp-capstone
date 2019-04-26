@@ -3,6 +3,7 @@
 - [Blog Post \#2](#blog-post-2)
 - [Blog Post \#3: Project Proposal](#blog-post-3-project-proposal)
 - [Blog Post \#4: Spinning Up](#blog-post-4-spinning-up)
+- [Blog Post \#5: BERT Baseline and Error Analysis](#blog-post-5-bert-baseline-and-error-analysis)
 
 ## Blog Post 1
 
@@ -178,7 +179,7 @@ example, this recent paper from [Neubig et al.,
 seeks to facilitate the comparison of text-generation systems (e.g., for
 machine translation).
 
-## Blog Post \#5: BERT Baseline and Error analysis
+## Blog Post \#5: BERT Baseline and Error Analysis
 
 We trained and evaluated BERT for NER on the CoNLL 2003 corpus. Our model
 scores 0.795 F! on the dev set and 0.733 on the test set. To understand the
