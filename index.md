@@ -182,7 +182,7 @@ machine translation).
 ## Blog Post \#5: BERT Baseline and Error Analysis
 
 We trained and evaluated BERT for NER on the CoNLL 2003 corpus. Our model
-scores 0.795 F! on the dev set and 0.733 on the test set. To understand the
+scores 0.795 F1 on the dev set and 0.733 F1 on the test set. To understand the
 errors made by BERT, we plotted the following confusion matrix.
 ![](normalized_confusion_matrix.png)
 At the first glance, the model seems really bad at predicting the B tags.
