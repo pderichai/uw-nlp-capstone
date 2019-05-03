@@ -112,13 +112,13 @@ that were made, and a general history of parsers.
 
 ## Blog Post \#3: Project Proposal
 
-Contextual word representations (CWRs) like ELMo[^fn1], GPT[^fn2], and
-BERT[^fn3] have improved the state of the art on a wide variety of NLP tasks.
+Contextual word representations (CWRs) like ELMo (Peters et al., 2018), GPT (Radford et al., 2018), and
+BERT (Devlin et al., 2019) have improved the state of the art on a wide variety of NLP tasks.
 Pretraining large-scale contextualizers on massive amounts of text with
 self-supervised objectives (e.g., masked language modeling, bidirectional
-language modeling) is key to their success.[^fn4]
+language modeling) is key to their success (Liu et al., 2019).
 
-Prior work[^fn4] analyzed CWRs with probing models and found notable
+Prior work (Liu et al., 2019) analyzed CWRs with probing models and found notable
 shortcomings.  In particular, while CWRs approach or outperform the state of
 the art on many tasks, these same embeddings perform poorly on tasks like named
 entity recognition (NER).
@@ -156,11 +156,23 @@ general.
 We're also interested in producing CWRs with greater knowledge about entities,
 and **evaluating whether these methods lead to gains on intrinsic probing tasks
 and extrinsic NLP tasks.** For instance, one idea would be to pretrain
-entity-aware language models[^fn5] and examine whether their hidden states
+entity-aware language models (Ji et al., 2017) and examine whether their hidden states
 encode more information about entities / are more performant than standard CWRs
 on tasks that require knowledge about entities. It's likely that we will be
 able to produce a proof-of-concept, but large-scale pretraining may prove to be
 cost and time-prohibitive.
+
+### References
+
+Peters, Matthew E., et al. "Deep contextualized word representations." Proc. of NAACL (2018).
+
+Radford, Alec, et al. ["Improving language understanding by generative pre-training."](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf) (2018).
+
+Devlin, Jacob, et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." Proc. of NAACL (2019).
+
+Liu, Nelson F., et al. "Linguistic Knowledge and Transferability of Contextual Representations." Proc. of NAACL (2019).
+
+Ji, Yangfeng, et al. "Dynamic Entity Representations in Neural Language Models." Proc. of EMNLP (2017).
 
 ## Blog Post \#4: Spinning Up
 
@@ -201,21 +213,13 @@ misclassified as organizations or locations.  In general, we can see that the
 model is over-classifying things as non-entities which suggests that it is, in
 general, having trouble recognizing entities.
 
-From here, we plan on implementing the entity LM[^fn5] and training BERT with
+From here, we plan on implementing the entity LM (Ji et al., 2017) and training BERT with
 additional entity information. We will also perform further error analysis by
 comparing the errors of the BERT model the current state-of-the-art NER models.
 
 ### References
 
-[^fn1]: Peters, Matthew E., et al. "Deep contextualized word representations." Proc. of NAACL (2018).
-
-[^fn2]: Radford, Alec, et al. ["Improving language understanding by generative pre-training."](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf) (2018).
-
-[^fn3]: Devlin, Jacob, et al. "BERT: Pre-training of deep bidirectional transformers for language understanding." Proc. of NAACL (2019).
-
-[^fn4]: Liu, Nelson F., et al. "Linguistic Knowledge and Transferability of Contextual Representations." Proc. of NAACL (2019).
-
-[^fn5]: Ji, Yangfeng, et al. "Dynamic Entity Representations in Neural Language Models." Proc. of EMNLP (2017).
+Ji, Yangfeng, et al. "Dynamic Entity Representations in Neural Language Models." Proc. of EMNLP (2017).
 
 ## Blog Post \#6: Augmenting Contextual Word Representations with Entity-Tracking Scaffolds
 
