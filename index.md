@@ -4,6 +4,7 @@
 - [Blog Post \#3: Project Proposal](#blog-post-3-project-proposal)
 - [Blog Post \#4: Spinning Up](#blog-post-4-spinning-up)
 - [Blog Post \#5: BERT Baseline and Error Analysis](#blog-post-5-bert-baseline-and-error-analysis)
+- [Blog Post \#6: Augmenting Contextual Word Representations with Entity-Tracking Scaffolds](#blog-post-6-augmenting-contextual-word-representations-with-entity-tracking-scaffolds)
 
 ## Blog Post 1
 
@@ -204,7 +205,7 @@ From here, we plan on implementing the entity LM[^fn5] and training BERT with
 additional entity information. We will also perform further error analysis by
 comparing the errors of the BERT model the current state-of-the-art NER models.
 
-## References
+### References
 
 [^fn1]: Peters, Matthew E., et al. "Deep contextualized word representations." Proc. of NAACL (2018).
 
@@ -215,3 +216,21 @@ comparing the errors of the BERT model the current state-of-the-art NER models.
 [^fn4]: Liu, Nelson F., et al. "Linguistic Knowledge and Transferability of Contextual Representations." Proc. of NAACL (2019).
 
 [^fn5]: Ji, Yangfeng, et al. "Dynamic Entity Representations in Neural Language Models." Proc. of EMNLP (2017).
+
+## Blog Post \#6: Augmenting Contextual Word Representations with Entity-Tracking Scaffolds
+
+BERT and ELMo don't seem to encode too much information about entities, and why would they---entities are relatively rare in text, and the ELMo / BERT pretraining objective skews the model toward focusing its capacity on simply learning to reproduce the training data. However, entities are central to language, and the ability to reason about entities is central to language understanding.
+
+Task-specific models and architectures are unlikely to develop this knowledge of entities without stronger inductive biases that encourage them to do so. One way of injecting this inductive bias is through explicitly modeling the phenomena of interest, perhaps with latent variables---the entity NLM model that we previously explored does exactly this. Another popular method for adding a particular inductive bias is multi-task learning. For instance, [Swayamdipta et al. (2018)](https://arxiv.org/abs/1808.10485) demonstrate improved performance on semantic core NLP tasks when multi-tasking with auxiliary syntactic objectives during training. Intuitively, this biases the learned representations toward being performant on both the main training task and the auxiliary scaffold tasks.
+
+Imbuing large-scale contextualizers with stronger notions of entities could take the form of either of the above. Taking representations from a large-scale entity NLM is a far more explicit way of baking in this inductive bias, but it's quite expensive to train (moreso than your typical large language model or other contextualizer). On the other hand, it's possible that fine-tuning on some entity-based scaffold tasks could maintain the quality of the contextual representations while adding greater awareness of entities.
+
+Indeed, a similar idea has been explored by [Hoang et al. (2018)](https://arxiv.org/abs/1810.02891), who augment a model for cloze-style reading comprehension by multitasking on two tasks that require knowledge / tracking of entities. Their first auxiliary task masks out an entity (that has been already referenced in the passage) and forces the reading comprehension model to predict it. This is a remarkably similar setting to the BERT pretraining objective, a point we discuss below (2). Their second auxiliary task has the model predicting, for the entities in a passage, how many times they've been previously mentioned in the passage. The idea here is that, if a model is able to count previous occurrences of an entity, it must have some awareness of them. Adding both of these auxiliary objectives improves over baselines for cloze-style (fill-in-the-blank) reading comprehension.
+
+We're interested in seeing if this idea could similarly translate to improving contextual word representations. More concretely, there are a few possible ways of executing this:
+
+1. Retrain BERT or ELMo with one or more auxiliary entity-tracking objectives.
+2. Modify the BERT training objective to mask out more entities, forcing the BERT model to be aware of when entities reoccur in text (the first auxiliary objective proposed by [Hoang et al. (2018)](https://arxiv.org/abs/1810.02891)). Then, retrain BERT.
+3. Fine-tune ELMo or BERT on the auxiliary entity-tracking objectives. This is unlikely to work out of the box, since the parameters will most likely become too task-specific and not general enough for applicability to a broad range of tasks. Thus, we'll likely have to fine-tune on auxiliary entity-tracking objectives while also optimizing the LM (in the case of ELMo) or MLM (in the case of BERT) objectives.
+
+(1) and (2) are the most computationally-expensive to execute, but seem more likely to work than (3), since fine-tuning is notoriously finicky. (3) is probably the most feasible to try out in the near future, so we're planning on pushing in this direction. We'll initially start by trying out auxiliary objectives  that are similar in spirit to those proposed in [Hoang et al. (2018)](https://arxiv.org/abs/1810.02891), though we also hope to explore novel objectives (e.g., given two entities, predict whether they corefer or not).
