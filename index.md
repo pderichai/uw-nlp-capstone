@@ -5,6 +5,7 @@
 - [Blog Post \#4: Spinning Up](#blog-post-4-spinning-up)
 - [Blog Post \#5: BERT Baseline and Error Analysis](#blog-post-5-bert-baseline-and-error-analysis)
 - [Blog Post \#6: Augmenting Contextual Word Representations with Entity-Tracking Scaffolds](#blog-post-6-augmenting-contextual-word-representations-with-entity-tracking-scaffolds)
+- [Blog Post \#7: Simple Fine-tuning Results](#blog-post-7-simple-fine-tuning-results)
 
 ## Blog Post 1
 
@@ -238,3 +239,38 @@ We're interested in seeing if this idea could similarly translate to improving c
 3. Fine-tune ELMo or BERT on the auxiliary entity-tracking objectives. This is unlikely to work out of the box, since the parameters will most likely become too task-specific and not general enough for applicability to a broad range of tasks. Thus, we'll likely have to fine-tune on auxiliary entity-tracking objectives while also optimizing the LM (in the case of ELMo) or MLM (in the case of BERT) objectives.
 
 (1) and (2) are the most computationally-expensive to execute, but seem more likely to work than (3), since fine-tuning is notoriously finicky. (3) is probably the most feasible to try out in the near future, so we're planning on pushing in this direction. We'll initially start by trying out auxiliary objectives  that are similar in spirit to those proposed in [Hoang et al. (2018)](https://arxiv.org/abs/1810.02891), though we also hope to explore novel objectives (e.g., given two entities, predict whether they corefer or not).
+
+## Blog Post \#7: Simple Fine-tuning Results
+
+While we continue to implement entity-tracking scaffolds, we have fine-tuned
+BERT on the CoNLL 2003 corpus. Unsurprisingly, fine-tuning hurts the
+performance of the model. Surprisingly, fine-tuning hurts the performance of
+the model _a lot_. Without fine-tuning, BERT achieves 0.795 F1 on the dev set.
+This drops to 0.402 F1 when we allow the BERT weights to update.
+
+Below is a confusion matrix for this fine-tuned BERT model:
+![](normalized_confusion_matrix_2.png)
+
+Unfortunately, this confusion matrix is not very informative since there are
+so many misclassfications. Across the board we see that the fine-tuned BERT
+model makes many more mistakes than the frozen BERT model. This is expected
+behavior since it is well known that BERT is difficult to fine-tune.
+Also, since we already know that BERT representations do not work
+well for NER, it makes sense that fine-tuning these representations does not
+improve performance.
+
+Our next actions will be to implement an alternative fine-tuning objective that
+is a combination of entity-tracking scaffolds and the LM/MLM objective. We hope
+that this alternative object will allow us to fine-tune BERT and improve its
+performance on NER.  Unfortunately, we are struggling with finding enough
+compute to train our BERT models.  We will need to carefully plan which
+experiments we want to run, especially if we want to train ELMo or BERT from
+scratch.
+
+
+### Group Feedback Discussion
+
+We have concluded that while we are working well individually and making good
+progress, we should plan more as a team. We will specify deliverables at the
+beginning of each week that we hope to complete. Besides the lack of planning,
+we are happy with each other and our project.
