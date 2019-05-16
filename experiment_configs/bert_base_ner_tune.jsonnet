@@ -27,7 +27,7 @@
         },
         "bert": {
             "type": "bert-pretrained",
-            "pretrained_model": "bert-large-cased",
+            "pretrained_model": "bert-base-cased",
             "requires_grad": true
         }
     },
