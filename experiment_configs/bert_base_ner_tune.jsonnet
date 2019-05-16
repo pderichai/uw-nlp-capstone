@@ -33,17 +33,17 @@
     },
     "encoder": {
       "type": "pass_through",
-      "input_dim": 1024,
+      "input_dim": 768,
     },
   },
   "iterator": {
     "type": "basic",
-    "batch_size": 32
+    "batch_size": 16
   },
   "trainer": {
     "optimizer": {
-        "type": "adam_bert",
-        "lr": 0.00005
+        "type": "bert_adam",
+        "lr": 0.00005,
         "warmup": 0.1,
         "t_total": 10000,
         "schedule": "warmup_linear"
@@ -53,6 +53,6 @@
     "num_epochs": 4,
     "grad_norm": 5.0,
     "patience": 25,
-    "cuda_device": 0
+    "cuda_device": 1
   }
 }
