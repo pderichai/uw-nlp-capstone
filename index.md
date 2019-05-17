@@ -268,13 +268,27 @@ compute to train our BERT models.  We will need to carefully plan which
 experiments we want to run, especially if we want to train ELMo or BERT from
 scratch.
 
+### Group Feedback Discussion
+
+We have concluded that while we are working well individually and making good
+progress, we should plan more as a team. We will specify deliverables at the
+beginning of each week that we hope to complete. Besides the lack of planning,
+we are happy with each other and our project.
+
 ## Blog Post \#8: Fixed Fine-tuning Results and Generality Metrics
 
 Since the fine-tuning results mentioned in the last blog post was so far off
-what is in the BERT paper, which has F1 of 0.964 on dev data, and 0.924 on test
-data, we looked into why our fine-tuning was so ineffective. After fixing some
-issues with our config and adopt hyper-parameters from the BERT paper, we ran
-the fine-tuning again and the model achieved the dev F1 of 0.903 and the test F1 of
+what is reported in the BERT paper (dev F1 of 0.964 and test F1 of 0.924)
+we looked into why our fine-tuning was so ineffective.
+We realized that we made some mistakes:
+
+1. We had far too high of a learning rate.
+2. Using the BERT learning rate scheduler is important.
+3. We only need to tune for a few epochs.
+
+After fixing these
+issues, we ran
+the fine-tuning again and the model achieved a dev F1 of 0.903 and test F1 of
 0.845. Notice that there is still a gap between our results and the ones in the
 BERT paper. This can be explained by [the missing details](https://github.com/allenai/allennlp/pull/2067#issuecomment-443961816) in the BERT paper that
 they used document context for each word instead of sentence context, which is
@@ -291,10 +305,9 @@ consists of various tasks testing the model's understanding. We can compare the
 performance on these tasks against the original BERT to see whether our representations
 maintains the generality while it has been optimized for NER.
 
+Specifically, we will:
 
-### Group Feedback Discussion
-
-We have concluded that while we are working well individually and making good
-progress, we should plan more as a team. We will specify deliverables at the
-beginning of each week that we hope to complete. Besides the lack of planning,
-we are happy with each other and our project.
+1. Set up an evaluation pipeline on GLUE to evaluate how general our fine-tuned
+BERT embeddings are.
+2. Finish implementing the mixed fine-tuning objective and evaluate these
+embeddings.
