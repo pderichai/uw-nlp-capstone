@@ -6,7 +6,7 @@
 - [Blog Post \#5: BERT Baseline and Error Analysis](#blog-post-5-bert-baseline-and-error-analysis)
 - [Blog Post \#6: Augmenting Contextual Word Representations with Entity-Tracking Scaffolds](#blog-post-6-augmenting-contextual-word-representations-with-entity-tracking-scaffolds)
 - [Blog Post \#7: Simple Fine-tuning Results](#blog-post-7-simple-fine-tuning-results)
-- [Blog Post \#8: Fixed Fine-tuning Results and Generality Metrics](#blog-post-8-fixed-fine-tuning-results)
+- [Blog Post \#8: Fixed Fine-tuning Results and Generality Metrics](#blog-post-8-fixed-fine-tuning-results-and-generality-metrics)
 
 ## Blog Post 1
 
