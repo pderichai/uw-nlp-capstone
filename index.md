@@ -6,6 +6,7 @@
 - [Blog Post \#5: BERT Baseline and Error Analysis](#blog-post-5-bert-baseline-and-error-analysis)
 - [Blog Post \#6: Augmenting Contextual Word Representations with Entity-Tracking Scaffolds](#blog-post-6-augmenting-contextual-word-representations-with-entity-tracking-scaffolds)
 - [Blog Post \#7: Simple Fine-tuning Results](#blog-post-7-simple-fine-tuning-results)
+- [Blog Post \#8: Fixed Fine-tuning Results and Generality Metrics](#blog-post-8-fixed-fine-tuning-results)
 
 ## Blog Post 1
 
@@ -281,6 +282,14 @@ not fairly comparable to previous state of the art. Below is the confusion matri
 for our fine-tuned BERT model on the test data:
 
 ![](normalized_confusion_matrix_3.png)
+
+Now that we have fine-tuned embeddings that performs fairly well on NER and
+continue to develop more variants, how do we know if they still maintain the
+generality of language representations, or just become too task-specific for NER?
+One way to check this is to run our representations on the GLUE benchmark, which
+consists of various tasks testing the model's understanding. We can compare the
+performance on these tasks against the original BERT to see whether our representations
+maintains the generality while it has been optimized for NER.
 
 
 ### Group Feedback Discussion
