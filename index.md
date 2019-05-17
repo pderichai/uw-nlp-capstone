@@ -267,6 +267,19 @@ compute to train our BERT models.  We will need to carefully plan which
 experiments we want to run, especially if we want to train ELMo or BERT from
 scratch.
 
+## Blog Post \#8: Fixed Fine-tuning Results and Generality Metrics
+
+Since the fine-tuning results mentioned in the last blog post was so far off
+what is in the BERT paper, which has F1 of 0.964 on dev data, and 0.924 on test
+data, we looked into why our fine-tuning was so ineffective. After fixing some
+issues with our config and adopt hyper-parameters from the BERT paper, we ran
+the fine-tuning again and the model achieved the dev F1 of 0.903 and the test F1 of
+0.845. Notice that there is still a gap between our results and the ones in the
+BERT paper. This can be explained by the missing details in the BERT paper that
+they used document context for each word instead of sentence context, which is
+not fairly comparable to previous state of the art. Below is the confusion matrix
+for our fine-tuned BERT model on the test data:
+
 
 ### Group Feedback Discussion
 
