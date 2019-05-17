@@ -280,6 +280,8 @@ they used document context for each word instead of sentence context, which is
 not fairly comparable to previous state of the art. Below is the confusion matrix
 for our fine-tuned BERT model on the test data:
 
+![](normalized_confusion_matrix_3.png)
+
 
 ### Group Feedback Discussion
 
