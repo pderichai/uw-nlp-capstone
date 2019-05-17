@@ -276,7 +276,7 @@ data, we looked into why our fine-tuning was so ineffective. After fixing some
 issues with our config and adopt hyper-parameters from the BERT paper, we ran
 the fine-tuning again and the model achieved the dev F1 of 0.903 and the test F1 of
 0.845. Notice that there is still a gap between our results and the ones in the
-BERT paper. This can be explained by the missing details in the BERT paper that
+BERT paper. This can be explained by [the missing details](https://github.com/allenai/allennlp/pull/2067#issuecomment-443961816) in the BERT paper that
 they used document context for each word instead of sentence context, which is
 not fairly comparable to previous state of the art. Below is the confusion matrix
 for our fine-tuned BERT model on the test data:
