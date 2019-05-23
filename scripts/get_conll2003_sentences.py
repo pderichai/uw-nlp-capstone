@@ -33,7 +33,7 @@ def main():
     # Write the output to a file
     with open(args.output_path, "w") as output_file:
         for document in all_documents:
-            output_file.write("{}\n".format(" ".join(document)))
+            output_file.write("{}\n\n".format(" ".join(document)))
     logger.info("Wrote output to {}".format(args.output_path))
 
 
