@@ -10,12 +10,12 @@
       },
      "bert": {
          "type": "bert-pretrained",
-         "pretrained_model": "bert-large-cased"
+         "pretrained_model": "bert-base-cased"
      }
     }
   },
-  "train_data_path": std.extVar("NER_TRAIN_DATA_PATH"),
-  "validation_data_path": std.extVar("NER_TEST_A_PATH"),
+  "train_data_path": "data/conll2003_ner/eng.train",
+  "validation_data_path": "data/conll2003_ner/eng.testa",
   "model": {
     "type": "simple_tagger",
     "calculate_span_f1": true,
@@ -27,29 +27,31 @@
         },
         "bert": {
             "type": "bert-pretrained",
-            "pretrained_model": "bert-large-cased",
-            "requires_grad": true
+            "pretrained_model": "bert-base-cased"
         }
     },
     "encoder": {
       "type": "pass_through",
-      "input_dim": 1024,
+      "input_dim": 768,
     },
   },
   "iterator": {
     "type": "basic",
-    "batch_size": 80
+    "batch_size": 16
   },
   "trainer": {
     "optimizer": {
-        "type": "adam",
-        "lr": 0.001
+        "type": "bert_adam",
+        "lr": 0.00005,
+        "warmup": 0.1,
+        "t_total": 10000,
+        "schedule": "warmup_linear"
     },
     "validation_metric": "+f1-measure-overall",
-    "num_serialized_models_to_keep": 3,
-    "num_epochs": 75,
+    "num_serialized_models_to_keep": -1,
+    "num_epochs": 4,
     "grad_norm": 5.0,
     "patience": 25,
-    "cuda_device": -1
+    "cuda_device": 0
   }
 }
