@@ -7,6 +7,7 @@
 - [Blog Post \#6: Augmenting Contextual Word Representations with Entity-Tracking Scaffolds](#blog-post-6-augmenting-contextual-word-representations-with-entity-tracking-scaffolds)
 - [Blog Post \#7: Simple Fine-tuning Results](#blog-post-7-simple-fine-tuning-results)
 - [Blog Post \#8: Fixed Fine-tuning Results and Generality Metrics](#blog-post-8-fixed-fine-tuning-results-and-generality-metrics)
+- [Blog Post \#9: BERT Domain Adaptation via Fine-tuning](#blog-post-9-bert-domain-adaptation-via-fine-tuning)
 
 ## Blog Post 1
 
@@ -311,3 +312,17 @@ Specifically, we will:
 BERT embeddings are.
 2. Finish implementing the mixed fine-tuning objective and evaluate these
 embeddings.
+
+## Blog Post \#9: BERT Domain Adaptation via Fine-tuning
+
+While we continue to implement our multitask objective, we realized that a reasonable point of comparison is simply fine-tuning the BERT model with its original training objective (the mix of masked language modeling and next-sentence prediction) on the raw data we plan to use in our multitask setup.
+
+We were particularly inspired in this regard by Ilya Sutskever's reaction to Rich Sutton's blog post (["The Bitter Lesson"](http://www.incompleteideas.net/IncIdeas/BitterLesson.html)). In his blog post, Sutton argues that models that simply take advantage of more data and more compute are more effective than those that try to be clever in modeling human cognition---the bitter lesson is that more compute and more data always wins. Ilya echoed this sentiment, [noting that "The reason most (not all) methods don't add value (over baseline) when scaled is because they're "extra training data in disguise", so their benefit vanishes in the high data regime"](https://twitter.com/ilyasut/status/1114658175272095744). In this regard, we want to ensure that our multi-task training setup isn't working _simply_ because it's extra training data for BERT in disguise.
+
+As a result, we took an idea from the ULMFiT paper [1] by fine-tuning our BERT model on the CoNLL 2003 raw text using its original training objective (MLM and NSP). This can be thought of as a sort of domain adaptation---we want to rule out the possibility that our multitask models work better because they enabled a BERT-based model to better capture the domain mismatch. After fine-tuning on the CoNLL 2003 rawtext, we trained models to do NER on CoNLL 2003 in the two ways previously explored---simply adding a linear layer on top of BERT embeddings, and varying whether or not to update the BERT parameters during training (fine-tuning vs frozen contextual word representations).
+
+Surprisingly, training a model on top of frozen contextual word representations from the domain-adapted BERT model led to significant NER performance reductions. The model as only able to achieve a validation F1 of `63.33` and a test F1 of `57.97`. For comparison, without fine-tuning, we were able to get `79.5` F1 on the dev set and `73.3` F1 on the test set when training a linear layer on top of frozen contextual word representations from the normal `bert-base-cased`. It's surprising that this domain adaptation step has such an adverse effect when using features from contextual word representations, and we'll continue to think about why we see this result.
+
+On the other hand, fine-tuning a domain-adapted BERT model on the NER task led to much stronger results. We were able to achieve a validation F1 of `89.68` and a test F1 of `84.01`. While this is a much more respectable performance, it still underperforms a model that doesn't use our domain adaptation step (using the vanilla base cased BERT model yields a dev F1 of `90.3` and test F1 of `84.5`).
+
+[1]: Howard, Jeremy and Sebastian Ruder. "Universal Language Model Fine-tuning for Text Classification." Proc. of ACL (2018).
