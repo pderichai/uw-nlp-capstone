@@ -10,7 +10,7 @@
       },
      "bert": {
          "type": "bert-pretrained",
-         "pretrained_model": "bert-base-cased"
+         "pretrained_model": "models/conll2003_domain_adapted_bert_base_cased/"
      }
     }
   },
@@ -27,7 +27,7 @@
         },
         "bert": {
             "type": "bert-pretrained",
-            "pretrained_model": "bert-base-cased",
+            "pretrained_model": "models/conll2003_domain_adapted_bert_base_cased/",
             "requires_grad": true
         }
     },
