@@ -212,11 +212,14 @@ def create_instances_from_document(
                 # They are 1 for the B tokens and the final [SEP]
                 segment_ids = [0 for _ in range(len(tokens_a) + 2)] + [1 for _ in range(len(tokens_b) + 1)]
 
+                tokens_no_tags = [t.split('/')[0] for t in tokens]
+                ner_tags = [t.split('/')[1] if len(t.split('/')) > 1 else t for t in tokens]
                 tokens, masked_lm_positions, masked_lm_labels = create_masked_lm_predictions(
-                    tokens, masked_lm_prob, max_predictions_per_seq, vocab_list)
+                    tokens_no_tags, masked_lm_prob, max_predictions_per_seq, vocab_list)
 
                 instance = {
                     "tokens": tokens,
+                    "ner_tags": ner_tags,
                     "segment_ids": segment_ids,
                     "is_random_next": is_random_next,
                     "masked_lm_positions": masked_lm_positions,
@@ -264,7 +267,8 @@ def main():
                     docs.add_document(doc)
                     doc = []
                 else:
-                    tokens = tokenizer.tokenize(line)
+                    #tokens = tokenizer.tokenize(line)
+                    tokens = line.split()
                     doc.append(tokens)
             if doc:
                 docs.add_document(doc)  # If the last doc didn't end on a newline, make sure it still gets added
