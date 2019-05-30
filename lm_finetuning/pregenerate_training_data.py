@@ -213,13 +213,33 @@ def create_instances_from_document(
                 segment_ids = [0 for _ in range(len(tokens_a) + 2)] + [1 for _ in range(len(tokens_b) + 1)]
 
                 tokens_no_tags = [t.split('/')[0] for t in tokens]
-                ner_tags = [t.split('/')[1] if len(t.split('/')) > 1 else t for t in tokens]
+                ner_tags = [t.split('/')[1] if len(t.split('/')) > 1 else 'O' for t in tokens]
                 tokens, masked_lm_positions, masked_lm_labels = create_masked_lm_predictions(
                     tokens_no_tags, masked_lm_prob, max_predictions_per_seq, vocab_list)
+
+                ner_idxs = []
+                ner_idx = 0
+                wp_to_idx = {}
+                for idx in range(len(ner_tags)):
+                    token = tokens_no_tags[idx]
+                    prev_token = tokens_no_tags[idx-1]
+                    t = ner_tags[idx]
+                    prev_t = ner_tags[idx-1]
+                    if t != 'O':
+                        if token not in wp_to_idx:
+                            if prev_t != 'O':
+                                wp_to_idx[token] = wp_to_idx[prev_token]
+                            else:
+                                wp_to_idx[token] = ner_idx
+                                ner_idx += 1
+                        ner_idxs.append(wp_to_idx[token])
+                    else:
+                        ner_idxs.append(-1)
 
                 instance = {
                     "tokens": tokens,
                     "ner_tags": ner_tags,
+                    "ner_idxs": ner_idxs,
                     "segment_ids": segment_ids,
                     "is_random_next": is_random_next,
                     "masked_lm_positions": masked_lm_positions,
