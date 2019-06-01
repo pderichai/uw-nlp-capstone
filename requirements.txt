@@ -1,1 +1,1 @@
-git+git://github.com/allenai/allennlp@57956e7
+git+git://github.com/allenai/allennlp
