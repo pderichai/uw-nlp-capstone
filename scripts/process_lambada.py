@@ -48,7 +48,7 @@ def main():
                     else:
                         token_to_ner_idx[token] = 0
                     for wp in word_pieces:
-                        sentence.append(wp + '/' + tag + '/' + str(token_to_ner_idx[token]))
+                        sentence.append(wp + '|||' + tag + '|||' + str(token_to_ner_idx[token]))
 
                 print(' '.join(sentence), file=out)
             print('', file=out)
