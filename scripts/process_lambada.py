@@ -15,6 +15,7 @@ def main():
             tokens = [g[0] for g in groups]
             ner_tags = [g[1] for g in groups]
 
+            # sentence segmentation
             sentences = []
             per_sentence_ner_tags = []
             sentence = []
@@ -29,17 +30,16 @@ def main():
                     sentence = []
                     sentence_ner_tags = []
 
+            # index the entities and write to output file
             ner_idxs = []
-            log = False
             for tokens, ner_tags in zip(sentences, per_sentence_ner_tags):
                 sentence = []
                 ner_idx = 1
                 token_to_ner_idx = {}
                 for idx in range(len(tokens)):
                     token = tokens[idx]
-                    prev_token = tokens[idx-1]
                     tag = ner_tags[idx]
-                    prev_tag = ner_tags[idx-1]
+
                     word_pieces = tokenizer.tokenize(token)
                     if tag != 'O':
                         if token not in token_to_ner_idx:
@@ -49,6 +49,7 @@ def main():
                         token_to_ner_idx[token] = 0
                     for wp in word_pieces:
                         sentence.append(wp + '/' + tag + '/' + str(token_to_ner_idx[token]))
+
                 print(' '.join(sentence), file=out)
             print('', file=out)
 
