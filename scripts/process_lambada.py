@@ -4,7 +4,7 @@ import re
 from pytorch_pretrained_bert.tokenization import BertTokenizer
 
 
-PUNCT_CHARS = ['.', '!', '?']
+PUNCT_CHARS = {'.', '!', '?'}
 
 
 def main():
@@ -14,19 +14,42 @@ def main():
             groups = [extract_ner(g) for g in line.split()]
             tokens = [g[0] for g in groups]
             ner_tags = [g[1] for g in groups]
-            idx = 0
+
+            sentences = []
+            per_sentence_ner_tags = []
             sentence = []
-            while idx < len(tokens):
+            sentence_ner_tags = []
+            for idx in range(len(tokens)):
                 token = tokens[idx]
-                tag = ner_tags[idx]
-                word_pieces = tokenizer.tokenize(token)
-                for wp in word_pieces:
-                    sentence.append(wp + '/' + tag)
-                if idx == len(tokens) or ((token in PUNCT_CHARS and tokens[idx+1] != '\'\'') or (token == '\'\'' and tokens[idx-1] in PUNCT_CHARS)):
-                    #print(token, tokens[idx+1])
-                    print(' '.join(sentence), file=out)
+                sentence.append(token)
+                sentence_ner_tags.append(ner_tags[idx])
+                if idx == len(tokens)-1 or ((token in PUNCT_CHARS and tokens[idx+1] != '\'\'') or (token == '\'\'' and tokens[idx-1] in PUNCT_CHARS)):
+                    sentences.append(sentence)
+                    per_sentence_ner_tags.append(sentence_ner_tags)
                     sentence = []
-                idx += 1
+                    sentence_ner_tags = []
+
+            ner_idxs = []
+            log = False
+            for tokens, ner_tags in zip(sentences, per_sentence_ner_tags):
+                sentence = []
+                ner_idx = 1
+                token_to_ner_idx = {}
+                for idx in range(len(tokens)):
+                    token = tokens[idx]
+                    prev_token = tokens[idx-1]
+                    tag = ner_tags[idx]
+                    prev_tag = ner_tags[idx-1]
+                    word_pieces = tokenizer.tokenize(token)
+                    if tag != 'O':
+                        if token not in token_to_ner_idx:
+                            token_to_ner_idx[token] = ner_idx
+                            ner_idx += 1
+                    else:
+                        token_to_ner_idx[token] = 0
+                    for wp in word_pieces:
+                        sentence.append(wp + '/' + tag + '/' + str(token_to_ner_idx[token]))
+                print(' '.join(sentence), file=out)
             print('', file=out)
 
 
