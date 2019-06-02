@@ -16,12 +16,16 @@ def main():
     parser = argparse.ArgumentParser(description=('Tag the LAMBADA data'))
     parser.add_argument('dataset_path')
     parser.add_argument('output_path')
+    parser.add_argument('batch_size')
 
     args = parser.parse_args()
 
     ner_model = named_entity_recognition_with_elmo_peters_2018()
     ner_model._model = ner_model._model.to(device=torch.device('cuda'))
     ner_model._tokenizer = allennlp.data.tokenizers.word_splitter.JustSpacesWordSplitter()
+
+    json_buffer = []
+    newline_indices = set()
 
     with open(args.dataset_path, 'r') as lambada, open(args.output_path, 'w') as out:
         for passage in tqdm(lambada, total=get_num_lines(args.dataset_path)):
@@ -36,12 +40,29 @@ def main():
                     prev_idx = idx
 
             for sentence in sentences:
-                results = ner_model.predict(sentence=sentence)
-                list_to_print = []
-                for word, tag in zip(results['words'], results['tags']):
-                    list_to_print.append(word + '/' + tag)
-                print(' '.join(list_to_print), file=out)
+                # results = ner_model.predict(sentence=sentence)
+                json_buffer.append({"sentence" : sentence})
+
+                flush_buffer(json_buffer, newline_indices, out, args.batch_size)
+            newline_indices.add(len(json_buffer) - 1)
+
+    flush_buffer(json_buffer, newline_indices, out, args.batch_size)
+
+def flush_buffer(json_buffer, newline_indices, out, batch_size):
+    if len(json_buffer) < batch_size:
+        return
+    result_sentences = ner_model.predict_batch_json(json_buffer)
+    for i in range(len(result_sentences)):
+        result_sentence = result_sentences[i]
+        print(result_sentence)
+        list_to_print = []
+        for word, tag in zip(result_sentence['words'], result_sentence['tags']):
+            list_to_print.append(word + '/' + tag)
+        print(' '.join(list_to_print), file=out)
+        if i in newline_indices:
             print('', file=out)
+    json_buffer.clear()
+    newline_indices.clear()
 
 
 def get_num_lines(file_path):
