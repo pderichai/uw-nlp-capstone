@@ -54,7 +54,7 @@ def flush_buffer(json_buffer, newline_indices, out, batch_size, ner_model):
     result_sentences = ner_model.predict_batch_json(json_buffer)
     for i in range(len(result_sentences)):
         result_sentence = result_sentences[i]
-        print(result_sentence)
+        print(result_sentence.keys())
         list_to_print = []
         for word, tag in zip(result_sentence['words'], result_sentence['tags']):
             list_to_print.append(word + '/' + tag)
