@@ -486,15 +486,17 @@ class BertOnlyNSPHead(nn.Module):
 
 
 class BertPreTrainingHeads(nn.Module):
-    def __init__(self, config, bert_model_embedding_weights):
+    def __init__(self, config, bert_model_embedding_weights, max_num_entities):
         super(BertPreTrainingHeads, self).__init__()
         self.predictions = BertLMPredictionHead(config, bert_model_embedding_weights)
+        self.entity_predictions = nn.Linear(config.hidden_size, max_num_entities)
         self.seq_relationship = nn.Linear(config.hidden_size, 2)
 
     def forward(self, sequence_output, pooled_output):
         prediction_scores = self.predictions(sequence_output)
+        entity_scores = self.entity_predictions(sequence_output)
         seq_relationship_score = self.seq_relationship(pooled_output)
-        return prediction_scores, seq_relationship_score
+        return prediction_scores, entity_scores, seq_relationship_score
 
 
 class BertPreTrainedModel(nn.Module):
@@ -791,25 +793,28 @@ class BertForPreTraining(BertPreTrainedModel):
     masked_lm_logits_scores, seq_relationship_logits = model(input_ids, token_type_ids, input_mask)
     ```
     """
-    def __init__(self, config):
+    # TODO: make max_num_entities actually configurable
+    def __init__(self, config, max_num_entities=8):
         super(BertForPreTraining, self).__init__(config)
         self.bert = BertModel(config)
-        self.cls = BertPreTrainingHeads(config, self.bert.embeddings.word_embeddings.weight)
+        self.max_num_entities = max_num_entities
+        self.cls = BertPreTrainingHeads(config, self.bert.embeddings.word_embeddings.weight, max_num_entities=max_num_entities)
         self.apply(self.init_bert_weights)
 
-    def forward(self, input_ids, token_type_ids=None, attention_mask=None, masked_lm_labels=None, next_sentence_label=None):
+    def forward(self, input_ids, token_type_ids=None, attention_mask=None, masked_lm_labels=None, entity_labels= None, next_sentence_label=None):
         sequence_output, pooled_output = self.bert(input_ids, token_type_ids, attention_mask,
                                                    output_all_encoded_layers=False)
-        prediction_scores, seq_relationship_score = self.cls(sequence_output, pooled_output)
+        prediction_scores, entity_scores, seq_relationship_score = self.cls(sequence_output, pooled_output)
 
-        if masked_lm_labels is not None and next_sentence_label is not None:
+        if masked_lm_labels is not None and entity_labels is not None and next_sentence_label is not None:
             loss_fct = CrossEntropyLoss(ignore_index=-1)
             masked_lm_loss = loss_fct(prediction_scores.view(-1, self.config.vocab_size), masked_lm_labels.view(-1))
+            entity_loss = loss_fct(entity_scores.view(-1, self.max_num_entities), entity_labels.view(-1))
             next_sentence_loss = loss_fct(seq_relationship_score.view(-1, 2), next_sentence_label.view(-1))
-            total_loss = masked_lm_loss + next_sentence_loss
+            total_loss = masked_lm_loss + entity_loss + next_sentence_loss
             return total_loss
         else:
-            return prediction_scores, seq_relationship_score
+            return prediction_scores, entity_scores, seq_relationship_score
 
 
 class BertForMaskedLM(BertPreTrainedModel):
