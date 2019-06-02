@@ -16,7 +16,7 @@ from pytorch_pretrained_bert.modeling import BertForPreTraining
 from pytorch_pretrained_bert.tokenization import BertTokenizer
 from pytorch_pretrained_bert.optimization import BertAdam, WarmupLinearSchedule
 
-InputFeatures = namedtuple("InputFeatures", "input_ids input_mask segment_ids lm_label_ids is_next")
+InputFeatures = namedtuple("InputFeatures", "input_ids input_mask segment_ids lm_label_ids entity_label_ids is_next")
 
 log_format = '%(asctime)-10s: %(message)s'
 logging.basicConfig(level=logging.INFO, format=log_format)
@@ -28,6 +28,8 @@ def convert_example_to_features(example, tokenizer, max_seq_length):
     is_random_next = example["is_random_next"]
     masked_lm_positions = example["masked_lm_positions"]
     masked_lm_labels = example["masked_lm_labels"]
+    entity_positions = example["entity_positions"]
+    entity_labels = example["entity_labels"]
 
     assert len(tokens) == len(segment_ids) <= max_seq_length  # The preprocessed data should be already truncated
     input_ids = tokenizer.convert_tokens_to_ids(tokens)
@@ -45,10 +47,14 @@ def convert_example_to_features(example, tokenizer, max_seq_length):
     lm_label_array = np.full(max_seq_length, dtype=np.int, fill_value=-1)
     lm_label_array[masked_lm_positions] = masked_label_ids
 
+    entity_label_array = np.full(max_seq_length, dtype=np.int, fill_value=-1)
+    entity_label_array[entity_positions] = entity_labels
+
     features = InputFeatures(input_ids=input_array,
                              input_mask=mask_array,
                              segment_ids=segment_array,
                              lm_label_ids=lm_label_array,
+                             entity_label_ids=entity_label_array,
                              is_next=is_random_next)
     return features
 
@@ -79,6 +85,9 @@ class PregeneratedDataset(Dataset):
             lm_label_ids = np.memmap(filename=self.working_dir/'lm_label_ids.memmap',
                                      shape=(num_samples, seq_len), mode='w+', dtype=np.int32)
             lm_label_ids[:] = -1
+            entity_label_ids = np.memmap(filename=self.working_dir/'entity_label_ids.memmap',
+                                     shape=(num_samples, seq_len), mode='w+', dtype=np.int32)
+            entity_label_ids[:] = -1
             is_nexts = np.memmap(filename=self.working_dir/'is_nexts.memmap',
                                  shape=(num_samples,), mode='w+', dtype=np.bool)
         else:
@@ -86,6 +95,7 @@ class PregeneratedDataset(Dataset):
             input_masks = np.zeros(shape=(num_samples, seq_len), dtype=np.bool)
             segment_ids = np.zeros(shape=(num_samples, seq_len), dtype=np.bool)
             lm_label_ids = np.full(shape=(num_samples, seq_len), dtype=np.int32, fill_value=-1)
+            entity_label_ids = np.full(shape=(num_samples, seq_len), dtype=np.int32, fill_value=-1)
             is_nexts = np.zeros(shape=(num_samples,), dtype=np.bool)
         logging.info(f"Loading training examples for epoch {epoch}")
         with data_file.open() as f:
@@ -97,6 +107,7 @@ class PregeneratedDataset(Dataset):
                 segment_ids[i] = features.segment_ids
                 input_masks[i] = features.input_mask
                 lm_label_ids[i] = features.lm_label_ids
+                entity_label_ids[i] = features.entity_label_ids
                 is_nexts[i] = features.is_next
         assert i == num_samples - 1  # Assert that the sample count metric was true
         logging.info("Loading complete!")
@@ -106,6 +117,7 @@ class PregeneratedDataset(Dataset):
         self.input_masks = input_masks
         self.segment_ids = segment_ids
         self.lm_label_ids = lm_label_ids
+        self.entity_label_ids = entity_label_ids
         self.is_nexts = is_nexts
 
     def __len__(self):
@@ -116,6 +128,7 @@ class PregeneratedDataset(Dataset):
                 torch.tensor(self.input_masks[item].astype(np.int64)),
                 torch.tensor(self.segment_ids[item].astype(np.int64)),
                 torch.tensor(self.lm_label_ids[item].astype(np.int64)),
+                torch.tensor(self.entity_label_ids[item].astype(np.int64)),
                 torch.tensor(self.is_nexts[item].astype(np.int64)))
 
 
@@ -295,8 +308,8 @@ def main():
         with tqdm(total=len(train_dataloader), desc=f"Epoch {epoch}") as pbar:
             for step, batch in enumerate(train_dataloader):
                 batch = tuple(t.to(device) for t in batch)
-                input_ids, input_mask, segment_ids, lm_label_ids, is_next = batch
-                loss = model(input_ids, segment_ids, input_mask, lm_label_ids, is_next)
+                input_ids, input_mask, segment_ids, lm_label_ids, entity_label_ids, is_next = batch
+                loss = model(input_ids, segment_ids, input_mask, lm_label_ids, entity_label_ids, is_next)
                 if n_gpu > 1:
                     loss = loss.mean() # mean() to average on multi-gpu.
                 if args.gradient_accumulation_steps > 1:
