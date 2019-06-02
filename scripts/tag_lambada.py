@@ -43,12 +43,12 @@ def main():
                 # results = ner_model.predict(sentence=sentence)
                 json_buffer.append({"sentence" : sentence})
 
-                flush_buffer(json_buffer, newline_indices, out, int(args.batch_size))
+                flush_buffer(json_buffer, newline_indices, out, int(args.batch_size), ner_model)
             newline_indices.add(len(json_buffer) - 1)
 
-    flush_buffer(json_buffer, newline_indices, out, int(args.batch_size))
+    flush_buffer(json_buffer, newline_indices, out, int(args.batch_size), ner_model)
 
-def flush_buffer(json_buffer, newline_indices, out, batch_size):
+def flush_buffer(json_buffer, newline_indices, out, batch_size, ner_model):
     if len(json_buffer) < batch_size:
         return
     result_sentences = ner_model.predict_batch_json(json_buffer)
