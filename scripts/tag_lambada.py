@@ -55,6 +55,7 @@ def flush_buffer(json_buffer, newline_indices, out, batch_size, ner_model):
     for i in range(len(result_sentences)):
         result_sentence = result_sentences[i]
         print(result_sentence.keys())
+        print("{:d} {:d} {:d} {:d}".format(len(result_sentence["logits"]), len(result_sentence["mask"]), len(result_sentence["words"]), len(result_sentence["tags"])))
         list_to_print = []
         for word, tag in zip(result_sentence['words'], result_sentence['tags']):
             list_to_print.append(word + '/' + tag)
