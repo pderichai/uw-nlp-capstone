@@ -2,14 +2,20 @@
 
 import re
 from pytorch_pretrained_bert.tokenization import BertTokenizer
-
+import argparse
 
 PUNCT_CHARS = {'.', '!', '?'}
 
 
 def main():
+    parser = argparse.ArgumentParser(description=('Process the tagged LAMBADA data'))
+    parser.add_argument('dataset_path')
+    parser.add_argument('output_path')
+
+    args = parser.parse_args()
+
     tokenizer = BertTokenizer.from_pretrained('bert-base-cased', do_lower_case=True)
-    with open('readcomp/dataprep/lamb/valid.txt.ner', 'r') as f, open('readcomp/dataprep/lamb/valid-bert.txt', 'w') as out:
+    with open(args.dataset_path, 'r') as f, open(args.output_path, 'w') as out:
         for line in f:
             groups = [extract_ner(g) for g in line.split()]
             tokens = [g[0] for g in groups]
